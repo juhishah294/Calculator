@@ -12,4 +12,4 @@ COPY target/*.war /usr/local/tomcat/webapps/ROOT.war
 EXPOSE 8080
 
 # Command to start Tomcat
-CMD ["catalina.sh", "run"]
+CMD ["java", "-jar", "ROOT.war"]
