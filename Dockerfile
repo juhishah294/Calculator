@@ -1,15 +1,14 @@
-# Use a base image with JDK 11 pre-installed
-FROM adoptopenjdk/openjdk11:alpine-slim
+# Use a base image with Tomcat installed
+FROM tomcat:latest
 
-# Set the working directory inside the container
-WORKDIR /app
+# Remove the default ROOT application
+RUN rm -rf /usr/local/tomcat/webapps/ROOT
 
-# Copy the compiled Java classes and resources to the container
-COPY target/classes /app/classes
-COPY target/dependency /app/dependency
+# Copy the WAR file into the webapps directory of Tomcat
+COPY target/Calculator-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
 
-# Set the classpath to include the dependency JARs
-ENV CLASSPATH /app/classes:/app/dependency/*
+# Expose the port if needed (Tomcat typically listens on port 8080)
+EXPOSE 8080
 
-# Command to run the Java application
-CMD ["java", "com.houarizegai.calculator.App"]
+# Command to start Tomcat
+CMD ["catalina.sh", "run"]
